@@ -54,10 +54,17 @@ export default function dnd() {
       ghostEl.style.top = `${evt.pageY - ghostEl.offsetHeight / 2}px`;
 
       const closest = document.elementFromPoint(evt.clientX, evt.clientY);
-
+      console.log(closest);
       if (closest.classList.contains('card') && draggedEl) {
         ghostCard.style.height = `${ghostEl.offsetHeight}px`;
-        evt.currentTarget.insertBefore(ghostCard, closest);
+        if (closest === closest.parentNode.firstElementChild) {
+          evt.currentTarget.insertBefore(ghostCard, closest);
+        } else {
+          closest.insertAdjacentElement('afterend', ghostCard);
+        }
+      } else if (closest.classList.contains('cards') && draggedEl) {
+        ghostCard.style.height = `${ghostEl.offsetHeight}px`;
+        closest.insertAdjacentElement('afterbegin', ghostCard);
       }
     });
 
